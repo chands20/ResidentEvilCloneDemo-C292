@@ -35,7 +35,8 @@ public class PlayerController_Edison : MonoBehaviour
         }
         if(Input.GetMouseButtonDown(0))
         {
-            Shoot(1);
+            //Debug.Log("Shoot");
+            //Shoot(1);
         }
     }
     private void LookAround()
@@ -80,16 +81,16 @@ public class PlayerController_Edison : MonoBehaviour
         }
     }
 
-    private void Shoot(float damage)
-    {
-        RaycastHit hit;
-        if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, 100))
-        {
-            Debug.DrawRay(firePoint.position, firePoint.forward * hit.distance, Color.red, 2f);
-            if (hit.transform.CompareTag("Zombie"))
-            {
-                hit.transform.GetComponent<Zombie_Edison>().TakeDamage(damage);
-            }
-        }
-    }
+    //private void Shoot(float damage)
+    //{
+    //    RaycastHit hit;
+    //    if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, 100))
+    //    {
+    //        Debug.DrawRay(firePoint.position, firePoint.forward * hit.distance, Color.red, 2f);
+    //        if (hit.transform.CompareTag("Zombie"))
+    //        {
+    //            hit.transform.GetComponent<Zombie_Edison>().TakeDamage(damage);
+    //        }
+    //    }
+    //}
 }
