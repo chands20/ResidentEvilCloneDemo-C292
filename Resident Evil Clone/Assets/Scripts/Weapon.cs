@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
@@ -13,10 +14,16 @@ public abstract class Weapon : MonoBehaviour
     [Tooltip("The point in the barrel where the bullet spawns")]
     [SerializeField] protected Transform firePoint;
 
+    [SerializeField] protected Magazine magazine;
+
+    [SerializeField] public Enums.MagazineType magazineType;
+
+    private GameObject ammoText; 
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        ammoText = GameObject.FindWithTag("AmmoText");
     }
 
     // Update is called once per frame
@@ -25,10 +32,23 @@ public abstract class Weapon : MonoBehaviour
         
     }
 
-    protected virtual void Reload()
+    public virtual int CheckAmmo()
     {
-        if (currentLoadedAmmo < ammoCapacity && currentSpareAmmo > 0)
+        if (magazine != null)
         {
+            return magazine.GetRounds();
+        }
+        else
+            return 0;
+    }
+
+    public virtual void Reload(Magazine newMag)
+    {
+        magazine = newMag;
+       /* if (currentLoadedAmmo < ammoCapacity && currentSpareAmmo > 0)
+        {
+
+            
             int bulletsToLoad = ammoCapacity - currentLoadedAmmo;
             if (currentSpareAmmo >= bulletsToLoad)
             {
@@ -38,26 +58,28 @@ public abstract class Weapon : MonoBehaviour
             else
             {
                 currentLoadedAmmo = currentLoadedAmmo + currentSpareAmmo;
-            }
-        }
+            }*/
+        
     }
     
-    protected virtual void Fire()
+    public virtual void Fire()
     {
-        if (canFire)
+        if (magazine != null)
         {
-            RaycastHit hit;
-            if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, 500))
+            if (magazine.GetRounds() > 0)
             {
-                Debug.DrawRay(firePoint.position, firePoint.forward * hit.distance, Color.red, 2f);
-                if (hit.transform.CompareTag("Zombie"))
+                magazine.RemoveRound();
+                ammoText.GetComponent<TextMeshProUGUI>().text = "Ammo: " + CheckAmmo();
+                RaycastHit hit;
+                if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, 500))
                 {
-                    hit.transform.GetComponent<Enemy>().TakeDamage(1);
+                    Debug.DrawRay(firePoint.position, firePoint.forward * hit.distance, Color.red, 2f);
+                    if (hit.transform.CompareTag("Zombie"))
+                    {
+                        hit.transform.GetComponent<Enemy>().TakeDamage(1);
+                    }
                 }
             }
         }
     }
-
-
-
 }

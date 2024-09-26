@@ -16,15 +16,15 @@ public class Pistol : Weapon
         
     }
 
-    protected override void Fire()
+    public override void Fire()
     {
         base.Fire();
 
 
     }
 
-    protected override void Reload()
+    public override void Reload(Magazine newMag)
     {
-        base.Reload(); 
+        base.Reload(newMag); 
     }
 }
