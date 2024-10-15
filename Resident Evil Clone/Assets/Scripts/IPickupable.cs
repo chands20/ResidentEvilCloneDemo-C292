@@ -4,7 +4,9 @@ using UnityEngine;
 
 public interface IPickupable
 {
-    public void Pickup(PlayerController player);
-
-
+    int AmmoCount { get; set; }
+    int AmmoCapacity { get; set; }
+    string MagType { get; set; }
+    void OnPickup(PlayerController_Edison player);
+    void OnDrop();
 }
